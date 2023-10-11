@@ -16,10 +16,11 @@ const isShow = ref(false);
 const showEdit = () => (isShow.value = !isShow.value);
 const getEditData = () => console.log(editorData.value);
 
-onMounted(() => {
-	setTimeout(() => {
-		isShow.value = true;
-	}, 100);
+onMounted(async () => {
+	const response = await $fetch("/upl/users/");
+	console.log(response);
+
+	isShow.value = true;
 });
 </script>
 
@@ -33,28 +34,19 @@ onMounted(() => {
 			<el-button type="warning">Warning</el-button>
 			<el-button type="danger">Danger</el-button>
 		</div>
-		<br />
 		<div class="flex flex-row">
-			<el-button :icon="Search" circle />
-			<el-button type="primary" :icon="Edit" circle />
-			<el-button type="success" :icon="Check" circle />
-			<el-button type="info" :icon="Message" circle />
-			<el-button type="warning" :icon="Star" circle />
-			<el-button type="danger" :icon="Delete" circle />
+			I'm using an Iconify Icon! <Icon icon="mdi:black-mesa" />
 		</div>
+		<form>
+			<label for="locale-select">{{ $t("language") }}: </label>
+			<select id="locale-select" v-model="$i18n.locale">
+				<option value="en">en</option>
+				<option value="zh">zh</option>
+			</select>
+		</form>
+		<tinycme-editor v-model="editorData" v-if="isShow"></tinycme-editor>
+		<pre v-html="editorData"></pre>
 	</div>
-	<div class="flex flex-row">
-		I'm using an Iconify Icon! <Icon icon="mdi:black-mesa" />
-	</div>
-	<form>
-		<label for="locale-select">{{ $t("language") }}: </label>
-		<select id="locale-select" v-model="$i18n.locale">
-			<option value="en">en</option>
-			<option value="zh">zh</option>
-		</select>
-	</form>
-	<tinycme-editor v-model="editorData" v-if="isShow"></tinycme-editor>
-	<pre v-html="editorData"></pre>
 </template>
 
 <style lang="scss"></style>

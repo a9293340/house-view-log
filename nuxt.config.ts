@@ -9,4 +9,14 @@ export default defineNuxtConfig({
 		},
 	},
 	plugins: [],
+	vite: {
+		server: {
+			proxy: {
+				"/upl": {
+					target: "https://house-view-log-express.onrender.com/",
+					changeOrigin: true,
+				},
+			},
+		},
+	},
 });
