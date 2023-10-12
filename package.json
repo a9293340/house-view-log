@@ -27,10 +27,15 @@
 		"@iconify/json": "^2.2.127",
 		"@iconify/vue": "^4.1.1",
 		"@intlify/unplugin-vue-i18n": "^1.4.0",
+		"@pinia/nuxt": "^0.4.11",
 		"@tinymce/tinymce-vue": "^4.x.x",
 		"element-plus": "^2.3.14",
+		"pinia": "^2.1.6",
 		"tailwind-scrollbar": "^3.0.5",
 		"tinymce": "^5.x.x",
 		"tinymce-i18n": "^23.9.11"
+	},
+	"overrides": {
+		"vue": "latest"
 	}
 }

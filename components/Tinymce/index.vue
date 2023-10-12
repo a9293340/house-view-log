@@ -72,8 +72,23 @@ init.value = {
 	toolbar: props.toolbar,
 	quickbars_insert_toolbar: false,
 	branding: false,
-	file_picker_types: "image",
-	file_picker_callback: pickerCallback,
+	images_file_types: "jpg,svg,webp,png,jpeg,ico",
+	default_link_target: "_blank",
+	deprecation_warnings: false,
+	images_upload_handler: async (blobInfo, success, failure) => {
+		console.log(blobInfo);
+		let params = new FormData();
+		params.append("file", blobInfo.blob());
+		const path = (
+			await useFetch("/api/upload", {
+				method: "post",
+				body: params,
+			})
+		).data.value?.path[0];
+		console.log(path);
+		if (path) success(path);
+		else failure("upload failed");
+	},
 	content_style:
 		"body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
 };
