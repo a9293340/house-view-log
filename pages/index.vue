@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-const { addCount } = useHomeStore();
-const { count } = storeToRefs(useHomeStore());
 const editorData = ref("<p>Content of the editor.</p>");
 const isShow = ref(false);
 const imgPath = ref("");
@@ -44,13 +41,10 @@ onMounted(async () => {
 		<div class="flex flex-row">
 			<el-button>Default</el-button>
 			<el-button type="primary" @click="getEditData">get Edit Data</el-button>
-			<el-button type="success" @click="addCount">add Count</el-button>
+			<el-button type="success">add Count</el-button>
 			<el-button type="info">Info</el-button>
 			<el-button type="warning">Warning</el-button>
 			<el-button type="danger">Danger</el-button>
-		</div>
-		<div class="flex flex-row">
-			<p>{{ count }}</p>
 		</div>
 		<div class="flex flex-row">
 			I'm using an Iconify Icon!

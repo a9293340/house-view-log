@@ -10,11 +10,18 @@ export default defineNuxtConfig({
 	},
 	modules: ["@pinia/nuxt"],
 	imports: { dirs: ["stores"] },
+	nitro: {
+		plugins: ["~/server/db/index.js"],
+	},
 	vite: {
 		server: {
 			proxy: {
 				"/upl": {
 					target: "https://house-view-log-express.onrender.com/",
+					changeOrigin: true,
+				},
+				"/maps/api": {
+					target: "https://maps.googleapis.com",
 					changeOrigin: true,
 				},
 			},
