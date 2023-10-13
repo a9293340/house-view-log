@@ -257,6 +257,9 @@ const initGoogle = async () => {
 		currentLatLng.lng = position.coords.longitude;
 	});
 
+	if (!currentLatLng.lat) currentLatLng.lat = 25.029829;
+	if (!currentLatLng.lng) currentLatLng.lng = 121.5432936;
+
 	const loader = new Loader({
 		apiKey: import.meta.env.VITE_MAPKEY,
 		version: "weekly",
