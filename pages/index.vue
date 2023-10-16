@@ -1,65 +1,80 @@
-<script lang="ts" setup>
-const editorData = ref('<p>Content of the editor.</p>');
-const isShow = ref(false);
-const imgPath = ref('');
+<script setup>
+import loginPath from "@/assets/image/login-1.jpg";
+import { ElMessageBox } from "element-plus";
 
-const getEditData = () => console.log(editorData.value);
+const { setErrorLog } = useAppStore();
+const cookie = useCookie("house-view", {
+	maxAge: 60 * 60 * 24,
+});
 
-const onChange = async (event: any) => {
-  const files = event.target.files;
-  const formData = new FormData();
-  formData.append('file', files[0]);
-  imgPath.value = (
-    await useFetch('/api/upload', {
-      method: 'post',
-      body: formData,
-    })
-  ).data.value?.path[0] as string;
+const loginType = ref("L");
 
-  console.log(imgPath.value);
+const changeType = (type) => {
+	loginType.value = type;
 };
 
-onMounted(async () => {
-  isShow.value = true;
-  // const response = await $fetch("/upl/users/");
-  const local = await $fetch('/api/test');
-  // console.log(response);
-  console.log(local);
-});
+const login = async (form) => {
+	console.log(form);
+	if (form.type === "N") {
+		const res = await $fetch("/api/admin/create", {
+			method: "POST",
+			body: {
+				account: form.user.account,
+				password: form.user.password,
+			},
+		});
+		console.log(res);
+		ElMessageBox.alert("新增帳號成功", "提醒", {
+			confirmButtonText: "OK!",
+		}).then(() => {
+			changeType("L");
+		});
+	} else {
+		const res = await $fetch("/api/admin/login", {
+			method: "POST",
+			body: {
+				account: form.user.account,
+				password: form.user.password,
+			},
+		});
+
+		console.log(res);
+		if (!res.status) {
+			cookie.value = res.token;
+		} else {
+			setErrorLog({
+				title: "Login Failed!",
+				type: "error",
+				description: `帳號/密碼錯誤或不存在`,
+			});
+		}
+	}
+};
 </script>
 
 <template>
-  <div>
-    <h1>File Upload</h1>
-    <form>
-      <label for="file">File: </label>
-      <input type="file" name="file" @change="onChange" />
-    </form>
-    <img :src="imgPath" alt="" />
-  </div>
-  <div>
-    <div class="flex flex-row">
-      <el-button>Default</el-button>
-      <el-button type="primary" @click="getEditData">get Edit Data</el-button>
-      <el-button type="success">add Count</el-button>
-      <el-button type="info">Info</el-button>
-      <el-button type="warning">Warning</el-button>
-      <el-button type="danger">Danger</el-button>
-    </div>
-    <div class="flex flex-row">
-      I'm using an Iconify Icon!
-      <Icon icon="ic-baseline-search" class="w-36 h-36" />
-    </div>
-    <form>
-      <label for="locale-select">{{ $t('language') }}: </label>
-      <select id="locale-select" v-model="$i18n.locale">
-        <option value="en">en</option>
-        <option value="zh">zh</option>
-      </select>
-    </form>
-    <Tinymce v-model="editorData" v-if="isShow"></Tinymce>
-    <pre v-html="editorData"></pre>
-  </div>
+	<div class="login" :style="`background-image: url(${loginPath})`">
+		<div class="blur-img">
+			<div class="login">
+				<Login
+					v-model:loginType="loginType"
+					desc="這是一個關於看房記事本的網頁"
+					@login-go="login"
+					@types="changeType"
+				/>
+			</div>
+		</div>
+	</div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.login {
+	@apply w-full h-screen bg-cover bg-center;
+	.blur-img {
+		@apply w-full h-full flex flex-col justify-center items-center backdrop-blur-lg;
+		.login {
+			@apply w-144 h-144 p-12 bg-black bg-opacity-30 rounded-3xl flex flex-col justify-center items-center;
+		}
+	}
+}
+</style>
