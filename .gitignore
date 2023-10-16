@@ -8,7 +8,7 @@ dist
 
 # Node dependencies
 node_modules
-public/image
+public/image/*
 yarn.lock
 
 # Logs
