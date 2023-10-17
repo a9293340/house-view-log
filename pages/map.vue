@@ -6,7 +6,7 @@ import {
 	getMapPhoto,
 	setMapNull,
 	makeMarker,
-	nearbyApi,
+	nearbySearch_async,
 } from "@/utils/mapApi.js";
 import { storeToRefs } from "pinia";
 import { ElMessageBox } from "element-plus";
@@ -122,14 +122,15 @@ const searchFindData = async () => {
 				lng: currentLatLng.lng,
 		  };
 	changeMarkerAndOpenInformationBlock(
-		(
-			await nearbyApi(
-				location.lat,
-				location.lng,
-				5,
-				jud ? autoSearch.name : autoComplete.value
-			)
-		).results,
+		await nearbySearch_async(
+			states,
+			{
+				location: new states.google.maps.LatLng(location.lat, location.lng),
+				radius: 5,
+				keyword: jud ? autoSearch.name : autoComplete.value,
+			},
+			true
+		),
 		location.lat,
 		location.lng
 	);
@@ -149,6 +150,7 @@ const goToCenter = (
 };
 
 const changeMarkerAndOpenInformationBlock = (station, lat, lng) => {
+	console.log(station);
 	setNearByStation(station);
 	setPickLatLng(lat, lng);
 
@@ -232,9 +234,18 @@ const initMap = async () => {
 			await mapNearByStation(
 				["公寓", "大樓", "大廈", "宅", "邸"].map(
 					async (el) =>
-						(
-							await nearbyApi(event.latLng.lat(), event.latLng.lng(), 5, el)
-						).results
+						await nearbySearch_async(
+							states,
+							{
+								location: new states.google.maps.LatLng(
+									event.latLng.lat(),
+									event.latLng.lng()
+								),
+								radius: 5,
+								keyword: el,
+							},
+							true
+						)
 				)
 			),
 			event.latLng.lat(),
