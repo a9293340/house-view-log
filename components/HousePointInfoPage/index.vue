@@ -183,7 +183,7 @@ onMounted(async () => {
 		<el-form-item label="創作者 :">
 			<el-input class="w-full mb-3" v-model="createInfo.author" />
 		</el-form-item>
-		<!-- <Tinymce v-model="editorData" v-show="editForumDialogTrigger"></Tinymce> -->
+		<Tinymce v-model="editorData" v-show="editForumDialogTrigger"></Tinymce>
 		<div class="flex flex-row mt-4">
 			<el-button @click="dialogSummitHandler"> 送出 </el-button>
 			<el-button @click="editForumDialogTrigger = false"> 取消 </el-button>
