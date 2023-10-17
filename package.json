@@ -36,8 +36,5 @@
 		"tinymce": "^5.x.x",
 		"tinymce-i18n": "^23.9.11",
 		"vue-client-recaptcha": "^1.1.4"
-	},
-	"overrides": {
-		"vue": "latest"
 	}
 }

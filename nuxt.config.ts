@@ -8,10 +8,16 @@ export default defineNuxtConfig({
 			autoprefixer: {},
 		},
 	},
+	plugins: [
+		{
+			src: "~/plugins/element-plus.ts",
+		},
+	],
 	modules: ["@pinia/nuxt"],
 	imports: { dirs: ["stores"] },
 	nitro: {
 		plugins: ["~/server/db/index.js"],
+		preset: "vercel",
 	},
 	vite: {
 		server: {
