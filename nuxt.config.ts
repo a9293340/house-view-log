@@ -16,6 +16,9 @@ export default defineNuxtConfig({
 		{
 			src: "~/plugins/element-plus.ts",
 		},
+		{
+			src: "~/plugins/iconify.ts",
+		},
 	],
 	modules: ["@pinia/nuxt"],
 	imports: { dirs: ["stores"] },
