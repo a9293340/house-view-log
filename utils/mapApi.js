@@ -38,7 +38,7 @@ export const setMapNull = (mark) => {
 
 export const nearbyApi = async (lat, lan, r, keyword) =>
 	await $fetch(
-		`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lan}&radius=${r}&keyword=${keyword}&key=${
+		`/maps/api/place/nearbysearch/json?location=${lat},${lan}&radius=${r}&keyword=${keyword}&key=${
 			import.meta.env.VITE_MAPKEY
 		}`
 	);
