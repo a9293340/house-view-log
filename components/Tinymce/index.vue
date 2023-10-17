@@ -17,7 +17,7 @@ const init = ref({});
 // if (process.client) {
 tinymce = await import("tinymce/tinymce");
 // 外觀
-await import("tinymce/skins/ui/oxide/skin.css");
+// await import("tinymce/skins/ui/oxide/skin.css");
 await import("tinymce/themes/silver/index.js");
 await import("tinymce/icons/default/index.js");
 await import("tinymce/plugins/emoticons/index.js");

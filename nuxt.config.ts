@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	css: ["~/assets/css/main.css", "element-plus/dist/index.css"],
+	css: [
+		"~/assets/css/main.css",
+		"element-plus/dist/index.css",
+		"tinymce/skins/ui/oxide/skin.css",
+	],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
