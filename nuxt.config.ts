@@ -19,6 +19,12 @@ export default defineNuxtConfig({
 		{
 			src: "~/plugins/iconify.ts",
 		},
+		{
+			src: "~/plugins/client-recaptcha.ts",
+		},
+		{
+			src: "~/plugins/i18n.ts",
+		},
 	],
 	modules: ["@pinia/nuxt"],
 	imports: { dirs: ["stores"] },
