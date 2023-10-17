@@ -58,4 +58,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	runtimeConfig: {
+		admin: process.env.VITE_ADMIN,
+		password: process.env.VITE_PASSWORD,
+		db: process.env.VITE_DB,
+	},
 });

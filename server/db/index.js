@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
 export default async (_nitroApp) => {
+	const config = useRuntimeConfig();
 	try {
 		mongoose.set("strictQuery", true); // 嚴格模式
 		await mongoose.connect(
-			`mongodb+srv://a9293340:574597@cluster0.rnvhhr4.mongodb.net/house?retryWrites=true&w=majority`
+			`mongodb+srv://${config.admin}:${config.password}@cluster0.rnvhhr4.mongodb.net/${config.db}?retryWrites=true&w=majority`
 		);
 		console.log("連接 MongoDB");
 	} catch (e) {
