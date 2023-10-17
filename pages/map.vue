@@ -391,7 +391,7 @@ onBeforeMount(async () => {
 		@apply fixed w-20 flex justify-center font-extrabold items-center cursor-pointer rounded-lg bg-white shadow-lg box-border h-10 z-10 top-5 right-2 lg:right-5;
 	}
 	.information-block {
-		@apply w-full h-128 duration-300 fixed right-0 bottom-0 bg-cover bg-no-repeat bg-top rounded-tl-xl rounded-tr-xl box-border shadow-black shadow-lg p-3;
+		@apply w-full z-50 h-128 duration-300 fixed right-0 bottom-0 bg-cover bg-no-repeat bg-top rounded-tl-xl rounded-tr-xl box-border shadow-black shadow-lg p-3;
 		.information-header {
 			@apply w-full h-10 mb-3 flex flex-row;
 		}
