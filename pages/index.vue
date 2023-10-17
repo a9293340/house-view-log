@@ -1,8 +1,8 @@
 <script setup>
 import loginPath from "@/assets/image/login-1.jpg";
 import { ElMessageBox } from "element-plus";
-
-const { setErrorLog } = useAppStore();
+const router = useRouter();
+const { setErrorLog, setAdmin } = useAppStore();
 const cookie = useCookie("house-view", {
 	maxAge: 60 * 60 * 24,
 });
@@ -14,7 +14,6 @@ const changeType = (type) => {
 };
 
 const login = async (form) => {
-	console.log(form);
 	if (form.type === "N") {
 		const res = await $fetch("/api/admin/create", {
 			method: "POST",
@@ -37,10 +36,16 @@ const login = async (form) => {
 				password: form.user.password,
 			},
 		});
-
-		console.log(res);
 		if (!res.status) {
-			cookie.value = res.token;
+			cookie.value = {
+				token: res.token,
+				admin: {
+					_id: res.admin._id,
+					account: res.admin.account,
+				},
+			};
+			setAdmin(res.admin);
+			router.push("/map");
 		} else {
 			setErrorLog({
 				title: "Login Failed!",
@@ -50,6 +55,10 @@ const login = async (form) => {
 		}
 	}
 };
+
+onMounted(() => {
+	cookie.value = null;
+});
 </script>
 
 <template>

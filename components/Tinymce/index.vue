@@ -1,11 +1,9 @@
 <template>
-	<no-ssr placeholder="Loading...">
-		<editor
-			v-model="editorValue"
-			:init="init"
-			api-key="i8819yepbj3rs122cg7lfc104hh24s9mw6xkdiuprqz2salp"
-		></editor>
-	</no-ssr>
+	<editor
+		v-model="editorValue"
+		:init="init"
+		api-key="i8819yepbj3rs122cg7lfc104hh24s9mw6xkdiuprqz2salp"
+	></editor>
 </template>
 
 <script setup>

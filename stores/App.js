@@ -19,8 +19,14 @@ export const useAppStore = defineStore("AppStore", () => {
 		}, 1000);
 	};
 
+	const admin = ref({});
+
+	const setAdmin = (ad) => (admin.value = ad);
+
 	return {
 		errorLog,
+		admin,
 		setErrorLog,
+		setAdmin,
 	};
 });

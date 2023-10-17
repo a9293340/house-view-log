@@ -10,13 +10,15 @@ const showForum = ref({});
 const forumInfo = ref([]);
 const isEdit = ref(false);
 const nowPickEditForumId = ref("");
+const cookie = useCookie("house-view");
 
 const editorData = ref("<p>Content of the editor.</p>");
 const createInfo = reactive({
-	author: "",
+	author: cookie.value.admin.account,
 	title: "",
 });
 
+// const { admin } = storeToRefs(useAppStore());
 const { pickHousePoint } = storeToRefs(useMapStore());
 const { setErrorLog } = useAppStore();
 
@@ -28,9 +30,8 @@ const dialogSummitHandler = async () => {
 	// console.log(createInfo);
 	// console.log(editorData.value);
 	// console.log(pickHousePoint.value.place_id);
-	if (!createInfo.author || !createInfo.title || !editorData.value) {
+	if (!createInfo.title || !editorData.value) {
 		let errorMsg = "";
-		if (!createInfo.author) errorMsg += "作者/";
 		if (!createInfo.title) errorMsg += "標題/";
 		if (!editorData.value) errorMsg += "內容";
 		setErrorLog({
@@ -44,14 +45,14 @@ const dialogSummitHandler = async () => {
 	ElMessageBox.alert("您已經成功新增此筆記 !", "提醒", {
 		confirmButtonText: "OK!",
 	}).then(async () => {
-		console.log(nowPickEditForumId.value);
+		// console.log(nowPickEditForumId.value);
 		let res;
 		if (!isEdit.value)
 			res = await $fetch("/api/house_forum/create", {
 				method: "POST",
 				body: {
 					title: createInfo.title,
-					author: createInfo.author,
+					author: cookie.value.admin._id,
 					place_id: pickHousePoint.value.place_id,
 					content: editorData.value,
 					time:
@@ -65,7 +66,7 @@ const dialogSummitHandler = async () => {
 				method: "PUT",
 				body: {
 					title: createInfo.title,
-					author: createInfo.author,
+					author: cookie.value.admin._id,
 					place_id: pickHousePoint.value.place_id,
 					_id: nowPickEditForumId.value,
 					content: editorData.value,
@@ -76,7 +77,7 @@ const dialogSummitHandler = async () => {
 				},
 			});
 
-		console.log(res);
+		// console.log(res);
 		if (!res.status) await getForumInfo();
 
 		editForumDialogTrigger.value = false;
@@ -92,8 +93,8 @@ const getForumInfo = async () =>
 	}));
 
 const editForum = (forum) => {
-	console.log(forum._id);
-	createInfo.author = forum.author;
+	// console.log(forum);
+	createInfo.author = forum.author_name;
 	createInfo.title = forum.title;
 	editorData.value = forum.content;
 	nowPickEditForumId.value = forum._id;
@@ -103,6 +104,8 @@ const editForum = (forum) => {
 
 const createForum = () => {
 	isEdit.value = false;
+	createInfo.author = cookie.value.admin.account;
+	// console.log(createInfo);
 	editForumDialogTrigger.value = true;
 };
 
@@ -116,7 +119,7 @@ onMounted(async () => {
 	window.onresize = () => {
 		dialogWidth.value = document.body.clientWidth > 1024 ? "85%" : "95%";
 	};
-	console.log(forumInfo.value);
+	// console.log(cookie.value.admin);
 });
 </script>
 
@@ -159,10 +162,16 @@ onMounted(async () => {
 					<p class="title-font" @click="openHtml(forum)">
 						{{ forum.title }}
 					</p>
-					<p class="close" @click="editForum(forum)">edit</p>
+					<p
+						class="close"
+						@click="editForum(forum)"
+						v-if="forum.author === cookie.admin._id"
+					>
+						edit
+					</p>
 				</div>
 				<div class="title">
-					<p class="sub">{{ forum.author }}</p>
+					<p class="sub">{{ forum.author_name }}</p>
 					<p class="sub">{{ forum.time }}</p>
 				</div>
 			</div>
@@ -181,7 +190,11 @@ onMounted(async () => {
 			<el-input class="w-full mb-3" v-model="createInfo.title" />
 		</el-form-item>
 		<el-form-item label="創作者 :">
-			<el-input class="w-full mb-3" v-model="createInfo.author" />
+			<el-input
+				class="w-full mb-3 text-white"
+				v-model="createInfo.author"
+				disabled
+			/>
 		</el-form-item>
 		<Tinymce v-model="editorData" v-show="editForumDialogTrigger"></Tinymce>
 		<div class="flex flex-row mt-4">

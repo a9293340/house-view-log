@@ -14,10 +14,16 @@ import newHouseImg from "@/assets/image/new_house.png";
 import housePointImg from "@/assets/image/house_point.png";
 import backgroundImage from "@/assets/image/background.jpg";
 
+definePageMeta({
+	middleware: ["auth"],
+});
+
 const { setNearByStation, setPickLatLng, setStates, setPickHousePoint } =
 	useMapStore();
 const { nearBySearchStation } = storeToRefs(useMapStore());
 const { setErrorLog } = useAppStore();
+const router = useRouter();
+const cookie = useCookie("house-view");
 const states = reactive({
 	google: null,
 	map: null,
@@ -299,10 +305,20 @@ const initGoogle = async () => {
 	setStates(states);
 };
 
+const clearCookie = () => {
+	cookie.value = null;
+};
+
 onBeforeMount(async () => {
 	await initGoogle();
 	await initMap();
 	await setHousePoints();
+
+	setInterval(() => {
+		const check = useCookie("house-view");
+		if (!check.value || check.value.token !== cookie.value.token)
+			router.push("/");
+	}, 100);
 });
 </script>
 
@@ -334,6 +350,7 @@ onBeforeMount(async () => {
 				</template>
 			</el-input>
 		</div>
+		<div class="account-logout" @click="clearCookie">Logout</div>
 		<div
 			:class="[
 				'information-block',
@@ -368,7 +385,10 @@ onBeforeMount(async () => {
 		@apply w-full h-full relative;
 	}
 	.map-search {
-		@apply fixed lg:w-96 w-[calc(100%-1rem)] h-10  z-10 top-5 lg:left-5 left-2;
+		@apply fixed lg:w-96 w-[calc(100%-9rem)] h-10  z-10 top-5 lg:left-5 left-2;
+	}
+	.account-logout {
+		@apply fixed w-20 flex justify-center font-extrabold items-center cursor-pointer rounded-lg bg-white shadow-lg box-border h-10 z-10 top-5 right-2 lg:right-5;
 	}
 	.information-block {
 		@apply w-full h-128 duration-300 fixed right-0 bottom-0 bg-cover bg-no-repeat bg-top rounded-tl-xl rounded-tr-xl box-border shadow-black shadow-lg p-3;
