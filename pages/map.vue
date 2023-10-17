@@ -253,7 +253,7 @@ const initGoogle = async () => {
 	if (!currentLatLng.lng) currentLatLng.lng = 121.5432936;
 
 	const loader = new Loader({
-		apiKey: import.meta.env.VITE_MAPKEY,
+		apiKey: process.env.VITE_MAPKEY,
 		version: "weekly",
 		libraries: ["places"],
 		language: "zh-TW",

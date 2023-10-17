@@ -30,7 +30,6 @@ export default defineNuxtConfig({
 	imports: { dirs: ["stores"] },
 	nitro: {
 		plugins: ["~/server/db/index.js"],
-		preset: "vercel",
 	},
 	vite: {
 		server: {
@@ -44,6 +43,9 @@ export default defineNuxtConfig({
 					changeOrigin: true,
 				},
 			},
+		},
+		define: {
+			"process.env": process.env,
 		},
 		css: {
 			postcss: {
