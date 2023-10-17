@@ -57,10 +57,10 @@ const goToHousePointInfoDetailPage = async (hPoint) => {
 };
 
 const getStationInformation = async (station) => {
-	// console.log(station);
+	console.log(station);
 	let info = {
-		lat: station.geometry.location.lat,
-		lng: station.geometry.location.lng,
+		lat: station.geometry.location.lat(),
+		lng: station.geometry.location.lng(),
 		vicinity: station.vicinity,
 		name: station.name,
 		place_id: station.place_id,
