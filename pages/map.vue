@@ -21,7 +21,7 @@ definePageMeta({
 const { setNearByStation, setPickLatLng, setStates, setPickHousePoint } =
 	useMapStore();
 const { nearBySearchStation } = storeToRefs(useMapStore());
-const { setErrorLog } = useAppStore();
+const { setErrorLog, setAdmin } = useAppStore();
 const router = useRouter();
 const cookie = useCookie("house-view");
 const states = reactive({
@@ -309,6 +309,10 @@ const clearCookie = () => {
 	cookie.value = null;
 };
 
+const goToLogin = () => {
+	router.push("/");
+};
+
 onBeforeMount(async () => {
 	await initGoogle();
 	await initMap();
@@ -316,8 +320,7 @@ onBeforeMount(async () => {
 
 	setInterval(() => {
 		const check = useCookie("house-view");
-		if (!check.value || check.value.token !== cookie.value.token)
-			router.push("/");
+		if (!check.value || check.value.token !== cookie.value.token) setAdmin({});
 	}, 100);
 });
 </script>
@@ -350,7 +353,8 @@ onBeforeMount(async () => {
 				</template>
 			</el-input>
 		</div>
-		<div class="account-logout" @click="clearCookie">Logout</div>
+		<div class="account-log" v-if="cookie" @click="clearCookie">Logout</div>
+		<div class="account-log" v-else @click="goToLogin">Login</div>
 		<div
 			:class="[
 				'information-block',
@@ -387,7 +391,7 @@ onBeforeMount(async () => {
 	.map-search {
 		@apply fixed lg:w-96 w-[calc(100%-9rem)] h-10  z-10 top-5 lg:left-5 left-2;
 	}
-	.account-logout {
+	.account-log {
 		@apply fixed w-20 flex justify-center font-extrabold items-center cursor-pointer rounded-lg bg-white shadow-lg box-border h-10 z-10 top-5 right-2 lg:right-5;
 	}
 	.information-block {

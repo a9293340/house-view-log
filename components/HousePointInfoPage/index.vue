@@ -14,11 +14,9 @@ const cookie = useCookie("house-view");
 
 const editorData = ref("<p>Content of the editor.</p>");
 const createInfo = reactive({
-	author: cookie.value.admin.account,
+	author: cookie.value ? cookie.value.admin.account : "",
 	title: "",
 });
-
-// const { admin } = storeToRefs(useAppStore());
 const { pickHousePoint } = storeToRefs(useMapStore());
 const { setErrorLog } = useAppStore();
 
@@ -103,6 +101,7 @@ const editForum = (forum) => {
 };
 
 const createForum = () => {
+	if (!cookie.value) return;
 	isEdit.value = false;
 	createInfo.author = cookie.value.admin.account;
 	// console.log(createInfo);
@@ -165,7 +164,7 @@ onMounted(async () => {
 					<p
 						class="close"
 						@click="editForum(forum)"
-						v-if="forum.author === cookie.admin._id"
+						v-if="cookie && forum.author === cookie.admin._id"
 					>
 						edit
 					</p>
