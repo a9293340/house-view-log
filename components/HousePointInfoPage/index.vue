@@ -101,7 +101,6 @@ const editForum = (forum) => {
 };
 
 const createForum = () => {
-	if (!cookie.value) return;
 	isEdit.value = false;
 	createInfo.author = cookie.value.admin.account;
 	// console.log(createInfo);
@@ -155,7 +154,7 @@ onMounted(async () => {
 			</div>
 		</div>
 		<div class="house-forum-zone">
-			<div class="add-forum" @click="createForum">+</div>
+			<div class="add-forum" v-if="cookie" @click="createForum">+</div>
 			<div class="forum-info" v-for="forum in forumInfo" :key="forum._id">
 				<div class="title">
 					<p class="title-font" @click="openHtml(forum)">
